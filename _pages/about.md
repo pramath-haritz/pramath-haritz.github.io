@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-![Illustration of EEG signal processing and NLP research](/images/eeg_nlp_research.png){: .align-right width="300px"}
+![Illustration of EEG signal processing and NLP research](/images/stars.jpg){: .align-right width="300px"}
 👨🏻‍💻 I'm an undergraduate student specializing in Electronics and Communication with a focus on Signal Processing at PES University, Bangalore.
 
 🔬 My research interests lie in **Biomedical Signal Processing** and **Natural Language Processing (NLP)**, particularly exploring ways to enhance diagnostic tools and understanding through these fields.
