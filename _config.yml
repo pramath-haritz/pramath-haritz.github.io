@@ -21,7 +21,7 @@ repository               : "pramath-haritz/pramath-haritz.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "/images/pic.jpeg"
+  avatar           : "images/pic.jpeg"
   name             : "Pramath Haritz"
   pronouns         : # example: "she/her"  
   bio              : "Deep Learning Enthusiast."
