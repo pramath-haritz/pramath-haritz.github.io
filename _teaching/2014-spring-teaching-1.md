@@ -1,20 +1,9 @@
 ---
-title: "Teaching experience 1"
+title: "Artificial Neural Networks(UE22EC343AC1) "
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/2014-spring-teaching-1
-venue: "University 1, Department"
-date: 2014-01-01
-location: "City, Country"
+permalink: "https://living-lamb-ce4.notion.site/Artificial-Neural-Networks-UE22EC343AC1-bc85b11920e24e609ea73ac911dd4363"
+venue: "PES University, Department of Electronics & Communication"
+date: 2014-01-08
+location: "Bengaluru, India"
 ---
-
-This is a description of a teaching experience. You can use markdown like any other post.
-
-Heading 1
-======
-
-Heading 2
-======
-
-Heading 3
-======
