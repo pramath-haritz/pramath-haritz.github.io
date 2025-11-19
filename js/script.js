@@ -1,30 +1,3 @@
-tailwind.config = {
-    darkMode: 'class',
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-                display: ['Space Grotesk', 'sans-serif'],
-            },
-            colors: {
-                'swiss-black': '#050505',
-                'swiss-white': '#FAFAFA',
-                'swiss-gray': '#888888'
-            },
-            animation: {
-                'marquee': 'marquee 25s linear infinite',
-                'marquee-reverse': 'marquee 25s linear infinite reverse',
-            },
-            keyframes: {
-                marquee: {
-                    '0%': { transform: 'translateX(0%)' },
-                    '100%': { transform: 'translateX(-100%)' },
-                }
-            }
-        }
-    }
-}
-
 // Check for saved theme preference
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark')
@@ -156,13 +129,13 @@ function switchView(viewName) {
     const mobileMenu = document.getElementById('mobile-menu');
     
     // Close mobile menu if open
-    mobileMenu.classList.add('translate-x-full');
+    if(mobileMenu) mobileMenu.classList.add('translate-x-full');
     
     window.scrollTo(0,0);
 
     // Hide all first
     [homeView, blogView, blogReadView].forEach(el => {
-        if(!el.classList.contains('hidden')) {
+        if(el && !el.classList.contains('hidden')) {
             el.style.opacity = '0';
             setTimeout(() => el.classList.add('hidden'), 300);
         }
@@ -171,18 +144,24 @@ function switchView(viewName) {
     // Show target
     setTimeout(() => {
         if (viewName === 'home') {
-            homeView.classList.remove('hidden');
-            setTimeout(() => homeView.style.opacity = '1', 50);
-            initObservers();
-            initHeroAnimation(); // Re-init animation
+            if(homeView) {
+                homeView.classList.remove('hidden');
+                setTimeout(() => homeView.style.opacity = '1', 50);
+                initObservers();
+                initHeroAnimation(); // Re-init animation
+            }
         } else if (viewName === 'blog') {
-            blogView.classList.remove('hidden');
-            setTimeout(() => blogView.style.opacity = '1', 50);
-            // FIX: Always force filter to all when switching to blog view
-            filterBlogs('all'); 
+            if(blogView) {
+                blogView.classList.remove('hidden');
+                setTimeout(() => blogView.style.opacity = '1', 50);
+                // FIX: Always force filter to all when switching to blog view
+                filterBlogs('all'); 
+            }
         } else if (viewName === 'read') {
-            blogReadView.classList.remove('hidden');
-            setTimeout(() => blogReadView.style.opacity = '1', 50);
+            if(blogReadView) {
+                blogReadView.classList.remove('hidden');
+                setTimeout(() => blogReadView.style.opacity = '1', 50);
+            }
         }
     }, 300);
 }
