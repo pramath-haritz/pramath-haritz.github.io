@@ -294,6 +294,116 @@
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
             initObservers();
+
+         // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initObservers();
+            initHeroAnimation(); // Start animation on load
+        });
+
+        // --- HERO FOURIER ANIMATION ---
+        let animationId; // Global to handle resize resets
+
+        function initHeroAnimation() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            
+            // Cancel previous loop if resizing
+            if (animationId) cancelAnimationFrame(animationId);
+
+            const ctx = canvas.getContext('2d');
+            
+            // Resize
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const centerY = canvas.height / 2;
+            const baseAmplitude = canvas.height / 8; 
+            let time = 0;
+            let cycle = 0; // Controls separation state
+
+            // Helper: Get color based on current theme
+            function getThemeColorStr() {
+                const isDark = document.documentElement.classList.contains('dark');
+                return isDark ? '255, 255, 255' : '5, 5, 5';
+            }
+
+            // Square Wave Harmonics (Odd frequencies: 1, 3, 5, 7, 9)
+            const harmonics = [
+                { freq: 1, amp: 1 },
+                { freq: 3, amp: 1/3 },
+                { freq: 5, amp: 1/5 },
+                { freq: 7, amp: 1/7 },
+                { freq: 9, amp: 1/9 }
+            ];
+
+            function animate() {
+                const themeColor = getThemeColorStr();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                time += 0.015;
+                cycle += 0.005; // Speed of decomposition cycle
+
+                // Separation factor: Oscillates between 0 (merged) and 1 (fully separated)
+                // Using sine squared to keep it positive and smooth
+                const separation = (Math.sin(cycle) + 1) / 2;
+                
+                // Visualize Individual Components
+                harmonics.forEach((h, index) => {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    // Calculate vertical offset for this harmonic when separated
+                    // Spread them out: center +/- offset
+                    // index 0 is center, others spread out
+                    const spreadY = (index - 2) * 60 * separation; 
+                    
+                    const currentAmplitude = baseAmplitude * h.amp;
+                    const opacity = 0.1 + (0.3 * separation); // More visible when separated
+
+                    ctx.strokeStyle = `rgba(${themeColor}, ${opacity})`;
+
+                    for (let x = 0; x < canvas.width; x++) {
+                        // Wave equation: y = A * sin(freq * (x + time))
+                        const y = centerY + spreadY + Math.sin(x * 0.01 * h.freq + time * h.freq) * currentAmplitude;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                });
+
+                // Visualize Complex Sum (Resultant Wave)
+                // Opacity fades slightly when fully decomposed to let components shine, but stays visible
+                ctx.beginPath();
+                ctx.lineWidth = 2; // Thicker line for the sum
+                ctx.strokeStyle = `rgba(${themeColor}, ${0.8 - (0.4 * separation)})`; 
+
+                for (let x = 0; x < canvas.width; x++) {
+                    let ySum = 0;
+                    // Sum all harmonics at this x
+                    harmonics.forEach(h => {
+                        ySum += Math.sin(x * 0.01 * h.freq + time * h.freq) * (baseAmplitude * h.amp);
+                    });
+                    
+                    // The sum stays at center, or maybe moves slightly? Let's keep it centered.
+                    // But we want to show it "breaking apart". 
+                    // Actually, the sum is physically the addition of the components.
+                    // If components move physically, the sum breaks.
+                    // Let's keep the sum pure as a reference in the background or center.
+                    
+                    ctx.lineTo(x, centerY + ySum);
+                }
+                ctx.stroke();
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            initHeroAnimation();
+        });
         });
 
     
