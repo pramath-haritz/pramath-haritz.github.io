@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pramath Haritz | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        'swiss-black': '#050505',
+                        'swiss-white': '#FAFAFA',
+                        'swiss-gray': '#888888'
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'marquee-reverse': 'marquee 25s linear infinite reverse',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        // Check for saved theme preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black bg-swiss-white text-swiss-black dark:bg-swiss-black dark:text-swiss-white transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-swiss-white/90 dark:bg-swiss-black/90 backdrop-blur-sm border-b border-black/5 dark:border-white/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" onclick="switchView('home')" class="font-display font-bold text-xl tracking-tighter z-50 mix-blend-difference text-swiss-black dark:text-swiss-white">
+                PH.
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8 font-sans text-sm tracking-wide">
+                <button onclick="switchView('home')" class="nav-link uppercase">Home</button>
+                <button onclick="scrollToSection('about')" class="nav-link uppercase">About</button>
+                <button onclick="scrollToSection('projects')" class="nav-link uppercase">Work</button>
+                <button onclick="switchView('blog')" class="nav-link uppercase">Journal</button>
+                <button onclick="scrollToSection('contact')" class="nav-link uppercase">Contact</button>
+                
+                <!-- Desktop Toggle -->
+                <button onclick="toggleTheme()" class="ml-4 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors" aria-label="Toggle Dark Mode">
+                    <!-- Sun (Hidden in Light, Shown in Dark) -->
+                    <svg class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <!-- Moon (Shown in Light, Hidden in Dark) -->
+                    <svg class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div class="md:hidden flex items-center gap-4">
+                 <!-- Mobile Toggle -->
+                 <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    <svg class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                </button>
+
+                <button id="menu-btn" class="z-50 flex flex-col gap-1.5">
+                    <span class="w-6 h-0.5 bg-black dark:bg-white transition-all duration-300 origin-center"></span>
+                    <span class="w-6 h-0.5 bg-black dark:bg-white transition-all duration-300 origin-center"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-swiss-white dark:bg-swiss-black transform translate-x-full transition-transform duration-500 flex flex-col justify-center items-center space-y-8 md:hidden">
+            <button onclick="mobileNav('home')" class="text-3xl font-display text-black dark:text-white">HOME</button>
+            <button onclick="mobileNav('about')" class="text-3xl font-display text-black dark:text-white">ABOUT</button>
+            <button onclick="mobileNav('blog')" class="text-3xl font-display text-black dark:text-white">JOURNAL</button>
+            <button onclick="mobileNav('contact')" class="text-3xl font-display text-black dark:text-white">CONTACT</button>
+        </div>
+    </nav>
+
+    <!-- VIEW: HOME -->
+    <main id="home-view" class="transition-opacity duration-500">
+        
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center px-6 pt-20 relative border-b border-black/10 dark:border-white/10">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="col-span-12 lg:col-span-8">
+                    <p class="font-sans text-swiss-gray mb-4 reveal-text uppercase tracking-widest text-xs">Spectrum Lab, IISc Bangalore</p>
+                    <h1 class="font-display text-6xl md:text-8xl lg:text-9xl font-medium leading-[0.9] tracking-tighter mb-8 reveal-text" style="transition-delay: 100ms;">
+                        DESIGNING<br>INTELLIGENCE
+                    </h1>
+                    <p class="font-sans text-lg md:text-xl max-w-lg leading-relaxed text-swiss-black/80 dark:text-swiss-white/80 reveal-text" style="transition-delay: 200ms;">
+                        I am Pramath Haritz. A researcher bridging the gap between computer vision, generative modeling, and human perception.
+                    </p>
+                </div>
+                
+                <div class="col-span-12 lg:col-span-4 flex items-end justify-start lg:justify-end pb-4 reveal-text" style="transition-delay: 300ms;">
+                    <div class="text-left lg:text-right">
+                        <p class="font-sans text-sm text-swiss-gray mb-1">Current Focus</p>
+                        <p class="font-display text-xl border-b border-black dark:border-white inline-block pb-0.5">ChaksuAI</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-12 left-6 animate-bounce hidden md:block">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 px-6 border-b border-black/10 dark:border-white/10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-4 reveal-text">
+                    <span class="font-mono text-xs border border-black dark:border-white rounded-full px-2 py-1">01</span>
+                    <h2 class="font-display text-4xl mt-4 uppercase tracking-tight">About Me</h2>
+                    
+                    <!-- Profile Image -->
+                    <div class="mt-8 relative group w-100 h-100">
+                        <img src="./assets/display_picture2.png" 
+                             alt="Pramath Haritz" 
+                             class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
+                        >
+                        <!-- Subtle border ring -->
+                        <div class="absolute inset-0 rounded-full border border-black/10 dark:border-white/10"></div>
+                    </div>
+                </div>
+                <div class="md:col-span-8 space-y-8 reveal-text" style="transition-delay: 100ms;">
+                    <p class="font-sans text-2xl md:text-3xl leading-tight font-light">
+                        I am currently working at <span class="font-medium border-b border-black dark:border-white">Spectrum Lab, IISc Bangalore</span>. My work exists at the intersection of technical precision and artistic intuition.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8">
+                        <div>
+                            <h3 class="font-display text-lg font-bold mb-4 uppercase border-b border-black/10 dark:border-white/10 pb-2">Technical Domain</h3>
+                            <p class="text-swiss-gray text-sm leading-relaxed mb-6">
+                                My expertise lies in Deep Learning frameworks and environment management. I focus on solving complex problems in Computer Vision and Biomedical Signal Processing, striving to make AI interpretable and impactful.
+                            </p>
+                            <div class="font-mono text-xs uppercase tracking-widest leading-loose text-black dark:text-white mb-8">
+                                Computer Vision <span class="text-swiss-gray px-1">/</span> 
+                                Generative Modeling <span class="text-swiss-gray px-1">/</span> 
+                                Biomedical Signal Processing
+                            </div>
+                            <a href="#" class="inline-flex items-center gap-2 font-mono text-xs uppercase border border-black dark:border-white px-5 py-2.5 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 group">
+                                Download Resume 
+                                <span class="group-hover:translate-y-0.5 transition-transform duration-300">↓</span>
+                            </a>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-lg font-bold mb-4 uppercase border-b border-black/10 dark:border-white/10 pb-2">Personal Ethos</h3>
+                            <p class="text-swiss-gray text-sm leading-relaxed mb-6">
+                                Beyond the terminal, I explore the nuances of craft and theory. I believe that good code, like good art, requires reduction until only the essential remains.
+                            </p>
+                            <div class="font-mono text-xs uppercase tracking-widest leading-loose text-black dark:text-white">
+                                Specialty Coffee <span class="text-swiss-gray px-1">/</span> 
+                                Swiss Design <span class="text-swiss-gray px-1">/</span> 
+                                Philosophy <span class="text-swiss-gray px-1">/</span> 
+                                Art <span class="text-swiss-gray px-1">/</span> 
+                                Minimalism <span class="text-swiss-gray px-1">/</span> 
+                                Aesthetics
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 px-6 border-b border-black/10 dark:border-white/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-end mb-16 reveal-text">
+                    <div>
+                        <span class="font-mono text-xs border border-black dark:border-white rounded-full px-2 py-1">02</span>
+                        <h2 class="font-display text-4xl mt-4 uppercase tracking-tight">Selected Work</h2>
+                    </div>
+                </div>
+
+                <!-- Project Item 1 -->
+                <div class="group relative border-t border-black/10 dark:border-white/10 py-12 project-card cursor-pointer reveal-text">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-2 text-swiss-gray font-mono text-sm">2023 — Present</div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-display text-5xl md:text-6xl font-medium tracking-tighter mb-2 group-hover:opacity-70 transition-opacity">ChaksuAI</h3>
+                            <p class="font-sans text-sm md:text-base text-swiss-gray">Last-Mile Vision Care, Powered by AI</p>
+                        </div>
+                        <div class="md:col-span-4 flex md:justify-end">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-black/20 dark:border-white/20 rounded-full text-xs uppercase">Computer Vision</span>
+                                <span class="px-3 py-1 border border-black/20 dark:border-white/20 rounded-full text-xs uppercase">Healthcare</span>
+                            </div>
+                            <span class="ml-4 project-arrow transition-transform duration-300">↗</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Item 2 -->
+                <div class="group relative border-t border-black/10 dark:border-white/10 py-12 project-card cursor-pointer reveal-text">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-2 text-swiss-gray font-mono text-sm">2023</div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-display text-5xl md:text-6xl font-medium tracking-tighter mb-2 group-hover:opacity-70 transition-opacity">GenMod Experiments</h3>
+                            <p class="font-sans text-sm md:text-base text-swiss-gray">Exploration in Generative Adversarial Networks</p>
+                        </div>
+                        <div class="md:col-span-4 flex md:justify-end">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-black/20 dark:border-white/20 rounded-full text-xs uppercase">PyTorch</span>
+                                <span class="px-3 py-1 border border-black/20 dark:border-white/20 rounded-full text-xs uppercase">Research</span>
+                            </div>
+                            <span class="ml-4 project-arrow transition-transform duration-300">↗</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <!-- Inverted Logic: Light(Black BG), Dark(White BG) to maintain high contrast footer -->
+        <section id="contact" class="py-24 px-6 bg-swiss-black dark:bg-swiss-white text-swiss-white dark:text-swiss-black transition-colors duration-300">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <span class="font-mono text-xs border border-white dark:border-black rounded-full px-2 py-1">03</span>
+                    <h2 class="font-display text-5xl md:text-6xl mt-8 uppercase tracking-tight leading-none">Let's create<br>something timeless.</h2>
+                    <p class="mt-8 text-swiss-gray font-sans max-w-md">
+                        Always open to discussing AI ethics, design systems, or the perfect extraction time for an Ethiopian pour-over.
+                    </p>
+                </div>
+                <div class="flex flex-col justify-end items-start md:items-end space-y-4">
+                    <a href="mailto:pramath@spectrum.iisc" class="font-display text-2xl md:text-4xl hover:underline decoration-1 underline-offset-4">pramath@spectrum.iisc</a>
+                    <div class="flex space-x-6 text-sm font-mono uppercase tracking-widest text-swiss-gray">
+                        <a href="#" class="hover:text-white dark:hover:text-black transition-colors">LinkedIn</a>
+                        <a href="#" class="hover:text-white dark:hover:text-black transition-colors">GitHub</a>
+                        <a href="#" class="hover:text-white dark:hover:text-black transition-colors">Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-6 px-6 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs uppercase font-mono text-swiss-gray">
+            <div>© 2025 Pramath Haritz</div>
+            <div>Designed in Bangalore</div>
+        </footer>
+    </main>
+
+    <!-- VIEW: BLOG (Hidden by default) -->
+    <main id="blog-view" class="hidden pt-24 px-6 min-h-screen bg-white dark:bg-swiss-black transition-colors duration-300">
+        <div class="max-w-4xl mx-auto">
+            <!-- Blog Header -->
+            <div class="mb-16 border-b border-black/10 dark:border-white/10 pb-8">
+                <h1 class="font-display text-6xl md:text-7xl uppercase tracking-tighter mb-4">The Journal</h1>
+                <p class="font-sans text-swiss-gray">Thoughts on Tech, Philosophy, and Art.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex space-x-2 mb-12 font-mono text-sm overflow-x-auto pb-2">
+                <button onclick="filterBlogs('all')" id="btn-all" class="blog-filter active px-4 py-2 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-full transition-colors">All</button>
+                <button onclick="filterBlogs('tech')" id="btn-tech" class="blog-filter px-4 py-2 border border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black rounded-full transition-colors">Technical</button>
+                <button onclick="filterBlogs('notes')" id="btn-notes" class="blog-filter px-4 py-2 border border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black rounded-full transition-colors">Philosophy & Design</button>
+            </div>
+
+            <!-- Blog List Container -->
+            <div id="blog-container" class="space-y-12 pb-24">
+                <!-- JavaScript will inject posts here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW: BLOG READ (New View) -->
+    <main id="blog-read-view" class="hidden pt-24 px-6 min-h-screen bg-white dark:bg-swiss-black transition-colors duration-300">
+        <div class="max-w-3xl mx-auto pb-24">
+            <button onclick="switchView('blog')" class="mb-12 group flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-swiss-gray hover:text-black dark:hover:text-white transition-colors">
+                <span class="group-hover:-translate-x-1 transition-transform">←</span> Back to Journal
+            </button>
+            
+            <div id="blog-content-area" class="reveal-text active">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
