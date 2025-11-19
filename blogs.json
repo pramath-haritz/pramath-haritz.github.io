@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "title": "Understanding Vision Transformers",
+        "category": "tech",
+        "date": "Oct 12, 2024",
+        "excerpt": "How attention mechanisms are reshaping computer vision beyond traditional CNN architectures.",
+        "readTime": "8 min read",
+        "file": "posts/vision-transformers.md"
+    },
+    {
+        "id": 2,
+        "title": "The Swiss Style: Grid Systems",
+        "category": "notes",
+        "date": "Sep 28, 2024",
+        "excerpt": "Why Josef Müller-Brockmann's principles matter more than ever in modern UI design.",
+        "readTime": "5 min read",
+        "file": "posts/swiss-style.md"
+    }
+]
