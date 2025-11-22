@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1,
+        "title": "README.md",
+        "category": "notes",
+        "date": "Nov 22, 2025",
+        "excerpt": "A little bit about me.",
+        "readTime": "1 min read",
+        "file": "posts/readme.md"
+    }
+]
