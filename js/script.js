@@ -114,7 +114,7 @@ function switchView(viewName) {
     console.log('Switching view to:', viewName);
     if (viewName === 'home') {
         if (isJournalPage) {
-            window.location.href = '../index.html';
+            window.location.href = '../';
         } else {
             // Already on home, just scroll top
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -146,7 +146,7 @@ function switchView(viewName) {
 
 function scrollToSection(id) {
     if (isJournalPage) {
-        window.location.href = '../index.html#' + id;
+        window.location.href = '../#' + id;
     } else {
         // Close menu if open
         toggleMobileMenu(false);
@@ -166,7 +166,7 @@ function mobileNav(destination) {
             window.location.href = 'journal/';
         }
     }
-    else if (destination === 'home') window.location.href = isJournalPage ? '../index.html' : 'index.html';
+    else if (destination === 'home') window.location.href = isJournalPage ? '../' : './';
     else scrollToSection(destination);
 }
 
