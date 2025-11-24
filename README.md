@@ -10,6 +10,15 @@ A personal portfolio and blog website built with modern web technologies, focusi
 - **Fonts**: Inter & Space Grotesk (Google Fonts)
 - **Icons**: Heroicons (SVG)
 
+## ✨ Key Features
+
+- **Decoupled Journal**: A dedicated blog section hosted at `/journal/` with directory-based routing for better SEO and direct linking (e.g., `journal/?id=1`).
+- **Automated Blog Workflow**: Write posts in Markdown with frontmatter, and a Node.js script auto-generates the JSON index.
+- **Organic Animation**: A custom "Separating Fourier Series" canvas animation on the homepage that visualizes wave decomposition.
+- **Interactive Resume**: A sleek modal popup for resume downloads.
+- **Dark Mode**: Fully supported system-aware dark mode with a manual toggle.
+- **SEO Optimized**: Comprehensive meta tags, Open Graph, and Twitter Card support.
+
 ## 🛠️ Getting Started
 
 Since this project uses ES modules and `fetch` requests for the blog system, it requires a local server to run (opening `index.html` directly will cause CORS errors).
@@ -47,6 +56,7 @@ The blog system is automated to read Markdown files from the `posts/` directory.
     category: "tech"  # or "notes"
     date: "Nov 24, 2025"
     excerpt: "A brief summary of the post."
+    readTime: "5 min read"
     ---
     ```
 3.  **Generate JSON**: Run the automation script to update the blog index:
@@ -63,10 +73,12 @@ The blog system is automated to read Markdown files from the `posts/` directory.
 ├── css/                 # Custom CSS overrides
 ├── js/                  # Application logic
 │   └── script.js        # Main logic (routing, animations, blog rendering)
+├── journal/             # Decoupled Journal Page
+│   └── index.html       # Journal entry point
 ├── posts/               # Markdown blog posts
 ├── articles.json        # Generated blog index (Do not edit manually)
 ├── generate_articles.js # Script to generate articles.json
-├── index.html           # Main entry point
+├── index.html           # Main homepage
 ├── tailwind.config.js   # Tailwind configuration
 └── README.md            # Documentation
 ```

@@ -69,7 +69,7 @@ function toggleTheme() {
 function loadBlogs() {
     blogsLoadedPromise = (async () => {
         try {
-            const path = isJournalPage ? '../articles.json' : 'articles.json';
+            const path = '/articles.json';
             const response = await fetch(`${path}?v=${new Date().getTime()}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

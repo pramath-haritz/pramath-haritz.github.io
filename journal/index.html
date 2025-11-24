@@ -53,14 +53,14 @@
         class="fixed top-0 w-full z-50 bg-swiss-white/90 dark:bg-swiss-black/90 backdrop-blur-sm border-b border-black/5 dark:border-white/10 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
             <!-- Logo -->
-            <a href="../index.html"
+            <a href="../"
                 class="font-display font-bold text-xl tracking-tighter z-50 text-swiss-black dark:text-swiss-white relative">
                 PH.
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8 font-sans text-sm tracking-wide">
-                <a href="../index.html" class="nav-link uppercase">Home</a>
+                <a href="../" class="nav-link uppercase">Home</a>
                 <a href="../index.html#about" class="nav-link uppercase">About</a>
                 <a href="../index.html#projects" class="nav-link uppercase">Work</a>
                 <a href="../index.html#contact" class="nav-link uppercase">Contact</a>
@@ -98,7 +98,7 @@
         class="fixed inset-0 h-screen w-screen bg-swiss-white dark:bg-swiss-black opacity-0 pointer-events-none transition-all duration-500 flex flex-col justify-between items-center py-24 px-6 md:hidden z-40">
         <!-- Navigation Links -->
         <div class="flex flex-col items-center justify-center space-y-6 flex-1">
-            <a href="../index.html"
+            <a href="../"
                 class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">HOME</a>
             <a href="../index.html#about"
                 class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">ABOUT</a>
@@ -141,7 +141,7 @@
             <div class="mb-16 border-b border-black/10 dark:border-white/10 pb-8">
                 <!-- Breadcrumb -->
                 <div class="flex items-center gap-2 mb-6 font-mono text-xs uppercase tracking-widest text-swiss-gray">
-                    <a href="../index.html" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
+                    <a href="../" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
                     <span>/</span>
                     <span class="text-black dark:text-white">Journal</span>
                 </div>
@@ -172,7 +172,7 @@
         <div class="max-w-3xl mx-auto pb-24">
             <!-- Breadcrumb -->
             <div class="mb-12 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-swiss-gray">
-                <a href="../index.html" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
+                <a href="../" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
                 <span>/</span>
                 <a href="#" onclick="switchView('blog'); return false;"
                     class="hover:text-black dark:hover:text-white transition-colors">Journal</a>
@@ -191,6 +191,28 @@
         <div>© 2025 Pramath Haritz</div>
         <div>Designed in random cafes</div>
     </footer>
+
+    <!-- Resume Popup -->
+    <div id="resume-popup"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-swiss-white/80 dark:bg-swiss-black/80 backdrop-blur-sm opacity-0 transition-all duration-300">
+        <div
+            class="bg-swiss-white dark:bg-swiss-black border border-black/10 dark:border-white/10 p-8 max-w-md mx-6 relative shadow-2xl transform scale-95 transition-all duration-300">
+            <button onclick="closeResumePopup()"
+                class="absolute top-4 right-4 text-swiss-gray hover:text-black dark:hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="font-display text-2xl mb-4 uppercase tracking-tight">Update in Progress</h3>
+            <p class="font-sans text-swiss-gray leading-relaxed mb-6">
+                My resume is currently undergoing updates and will be available shortly. If you require it immediately,
+                please feel free to reach out via email.
+            </p>
+            <a href="mailto:pramathgiri1@iisc.ac.in"
+                class="inline-block font-mono text-xs uppercase border-b border-black dark:border-white pb-0.5 hover:opacity-70 transition-opacity">Send
+                Email →</a>
+        </div>
+    </div>
 
     <!-- App Logic -->
     <script src="../js/script.js"></script>
