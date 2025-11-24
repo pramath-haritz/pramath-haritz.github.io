@@ -1,51 +1,52 @@
 tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                    },
-                    colors: {
-                        'swiss-black': '#050505',
-                        'swiss-white': '#FAFAFA',
-                        'swiss-gray': '#888888'
-                    },
-                    animation: {
-                        'marquee': 'marquee 25s linear infinite',
-                        'marquee-reverse': 'marquee 25s linear infinite reverse',
-                    },
-                    keyframes: {
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        }
-                    },
-                    typography: (theme) => ({
-                        DEFAULT: {
-                            css: {
-                                color: theme('colors.swiss-black'),
-                                '--tw-prose-body': theme('colors.swiss-black'),
-                                '--tw-prose-headings': theme('colors.swiss-black'),
-                                '--tw-prose-links': theme('colors.swiss-black'),
-                            },
-                        },
-                        invert: {
-                            css: {
-                                color: theme('colors.swiss-white'),
-                                '--tw-prose-body': theme('colors.swiss-white'),
-                                '--tw-prose-headings': theme('colors.swiss-white'),
-                                '--tw-prose-links': theme('colors.swiss-white'),
-                            },
-                        },
-                    }),
+    darkMode: 'class',
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                display: ['Space Grotesk', 'sans-serif'],
+            },
+            colors: {
+                'swiss-black': '#050505',
+                'swiss-white': '#FAFAFA',
+                'swiss-gray': '#888888'
+            },
+            animation: {
+                'marquee': 'marquee 25s linear infinite',
+                'marquee-reverse': 'marquee 25s linear infinite reverse',
+            },
+            keyframes: {
+                marquee: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' },
                 }
-            }
+            },
+            typography: (theme) => ({
+                DEFAULT: {
+                    css: {
+                        color: theme('colors.swiss-black'),
+                        '--tw-prose-body': theme('colors.swiss-black'),
+                        '--tw-prose-headings': theme('colors.swiss-black'),
+                        '--tw-prose-links': theme('colors.swiss-black'),
+                    },
+                },
+                invert: {
+                    css: {
+                        color: theme('colors.swiss-white'),
+                        '--tw-prose-body': theme('colors.swiss-white'),
+                        '--tw-prose-headings': theme('colors.swiss-white'),
+                        '--tw-prose-links': theme('colors.swiss-white'),
+                    },
+                },
+            }),
         }
+    }
+}
 
 // --- BLOG SYSTEM ---
 let blogs = [];
 let blogsLoadedPromise = null;
+const isJournalPage = window.location.pathname.includes('/journal');
 
 // --- THEME LOGIC ---
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -68,7 +69,8 @@ function toggleTheme() {
 function loadBlogs() {
     blogsLoadedPromise = (async () => {
         try {
-            const response = await fetch(`articles.json?v=${new Date().getTime()}`);
+            const path = isJournalPage ? '../articles.json' : 'articles.json';
+            const response = await fetch(`${path}?v=${new Date().getTime()}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -83,6 +85,8 @@ function loadBlogs() {
         }
     })();
 }
+
+// --- APP LOGIC ---
 
 // --- APP LOGIC ---
 
@@ -107,63 +111,45 @@ function initObservers() {
 
 // Navigation Switching
 function switchView(viewName) {
-    const homeView = document.getElementById('home-view');
-    const blogView = document.getElementById('blog-view');
-    const blogReadView = document.getElementById('blog-read-view');
-
-    // Close mobile menu if open
-    toggleMobileMenu(false);
-
-    window.scrollTo(0,0);
-
-    [homeView, blogView, blogReadView].forEach(el => {
-        if(el && !el.classList.contains('hidden')) {
-            el.style.opacity = '0';
-            setTimeout(() => el.classList.add('hidden'), 300);
+    console.log('Switching view to:', viewName);
+    if (viewName === 'home') {
+        if (isJournalPage) {
+            window.location.href = '../index.html';
+        } else {
+            // Already on home, just scroll top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    });
+    } else if (viewName === 'blog') {
+        if (!isJournalPage) {
+            window.location.href = 'journal/';
+        } else {
+            // On journal page, show list view
+            const blogView = document.getElementById('blog-view');
+            const blogReadView = document.getElementById('blog-read-view');
 
-    setTimeout(() => {
-        if (viewName === 'home') {
-            if(homeView) {
-                homeView.classList.remove('hidden');
-                setTimeout(() => homeView.style.opacity = '1', 50);
-                initObservers();
-                initHeroAnimation();
-            }
-        } else if (viewName === 'blog') {
-            if(blogView) {
+            if (blogView && blogReadView) {
+                console.log('Toggling blog views');
+                blogReadView.classList.add('hidden');
                 blogView.classList.remove('hidden');
-                setTimeout(() => {
-                    blogView.style.opacity = '1';
-                    filterBlogs('all');
-                }, 50);
-            }
-        } else if (viewName === 'read') {
-            if(blogReadView) {
-                blogReadView.classList.remove('hidden');
-                setTimeout(() => blogReadView.style.opacity = '1', 50);
+
+                // Clear URL param
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+
+                window.scrollTo(0, 0);
+            } else {
+                console.error('Blog views not found');
             }
         }
-    }, 300);
+    }
 }
 
 function scrollToSection(id) {
-    // First ensure we are on home view
-    const homeView = document.getElementById('home-view');
-    if (homeView.classList.contains('hidden')) {
-        switchView('home');
-        // Wait for transition then scroll
-        setTimeout(() => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 400);
+    if (isJournalPage) {
+        window.location.href = '../index.html#' + id;
     } else {
         // Close menu if open
         toggleMobileMenu(false);
-
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
@@ -172,13 +158,25 @@ function scrollToSection(id) {
 }
 
 function mobileNav(destination) {
-    if(destination === 'blog') switchView('blog');
-    else if (destination === 'home') switchView('home');
+    if (destination === 'blog') {
+        if (isJournalPage) {
+            switchView('blog');
+            toggleMobileMenu(false);
+        } else {
+            window.location.href = 'journal/';
+        }
+    }
+    else if (destination === 'home') window.location.href = isJournalPage ? '../index.html' : 'index.html';
     else scrollToSection(destination);
 }
 
 // Fetch Markdown content and render blog post
 async function openBlog(id) {
+    if (!isJournalPage) {
+        window.location.href = `journal/?id=${id}`;
+        return;
+    }
+
     if (blogsLoadedPromise) {
         await blogsLoadedPromise;
     }
@@ -186,41 +184,77 @@ async function openBlog(id) {
     if (!blog) return;
 
     const contentArea = document.getElementById('blog-content-area');
+    const blogView = document.getElementById('blog-view');
+    const blogReadView = document.getElementById('blog-read-view');
+
+    // Update URL
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
+    window.history.pushState({ path: newUrl }, '', newUrl);
 
     // Show loading state
-    contentArea.innerHTML = `<div class="animate-pulse text-swiss-gray">Loading article...</div>`;
-    switchView('read');
+    if (contentArea) {
+        contentArea.innerHTML = `<div class="animate-pulse text-swiss-gray">Loading article...</div>`;
+    }
+
+    if (blogView) blogView.classList.add('hidden');
+    if (blogReadView) blogReadView.classList.remove('hidden');
+
+    window.scrollTo(0, 0);
 
     try {
-        const response = await fetch(blog.file);
+        // Adjust path for journal subdirectory
+        const filePath = isJournalPage ? '../' + blog.file : blog.file;
+        const response = await fetch(filePath);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const markdownText = await response.text();
+        let markdownText = await response.text();
+
+        // Remove Frontmatter
+        markdownText = markdownText.replace(/^---[\s\S]*?---/, '').trim();
 
         // Convert Markdown to HTML using marked.js
         const htmlContent = marked.parse(markdownText);
 
-        contentArea.innerHTML = `
-            <div class="mb-8 border-b border-black/10 dark:border-white/10 pb-8">
-                <div class="flex items-center gap-3 mb-6 text-xs font-mono uppercase tracking-widest text-swiss-gray">
-                    <span>${blog.date}</span>
-                    <span>—</span>
-                    <span class="${blog.category === 'tech' ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}">${blog.category === 'tech' ? 'Technology' : 'Notes'}</span>
-                    <span>—</span>
-                    <span>${blog.readTime}</span>
+        if (contentArea) {
+            contentArea.innerHTML = `
+                <div class="mb-8 border-b border-black/10 dark:border-white/10 pb-8">
+                    <div class="flex items-center gap-3 mb-6 text-xs font-mono uppercase tracking-widest text-swiss-gray">
+                        <span>${blog.date}</span>
+                        <span>—</span>
+                        <span class="${blog.category === 'tech' ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}">${blog.category === 'tech' ? 'Technology' : 'Notes'}</span>
+                        <span>—</span>
+                        <span>${blog.readTime}</span>
+                    </div>
+                    <h1 class="font-display text-4xl md:text-6xl font-medium leading-tight mb-4">${blog.title}</h1>
                 </div>
-                <h1 class="font-display text-4xl md:text-6xl font-medium leading-tight mb-4">${blog.title}</h1>
-            </div>
-            <div class="prose prose-lg max-w-none font-serif dark:prose-invert">
-                ${htmlContent}
-            </div>
-        `;
+                <div class="prose prose-lg max-w-none font-serif dark:prose-invert">
+                    ${htmlContent}
+                </div>
+            `;
+        }
     } catch (error) {
-        contentArea.innerHTML = `<p class="text-red-500">Error loading content.</p>`;
+        if (contentArea) contentArea.innerHTML = `<p class="text-red-500">Error loading content.</p>`;
         console.error("Error fetching blog content:", error);
     }
 }
+
+// Handle browser back/forward
+window.onpopstate = function (event) {
+    if (isJournalPage) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+        if (postId) {
+            openBlog(parseInt(postId));
+        } else {
+            // Show list view
+            const blogView = document.getElementById('blog-view');
+            const blogReadView = document.getElementById('blog-read-view');
+            if (blogView) blogView.classList.remove('hidden');
+            if (blogReadView) blogReadView.classList.add('hidden');
+        }
+    }
+};
 
 // --- NEW MOBILE MENU LOGIC ---
 const menuBtn = document.getElementById('menu-btn');
@@ -260,6 +294,40 @@ function toggleMobileMenu(forceState) {
 if (menuBtn) {
     menuBtn.addEventListener('click', () => toggleMobileMenu());
 }
+
+// --- RESUME POPUP LOGIC ---
+function showResumePopup() {
+    const popup = document.getElementById('resume-popup');
+    if (popup) {
+        popup.classList.remove('hidden');
+        // Trigger reflow
+        void popup.offsetWidth;
+        popup.classList.remove('opacity-0');
+        const content = popup.querySelector('div');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+        document.body.style.overflow = 'hidden'; // Lock scroll
+    }
+}
+
+function closeResumePopup() {
+    const popup = document.getElementById('resume-popup');
+    if (popup) {
+        popup.classList.add('opacity-0');
+        const content = popup.querySelector('div');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+        document.body.style.overflow = ''; // Unlock scroll
+        setTimeout(() => {
+            popup.classList.add('hidden');
+        }, 300);
+    }
+}
+
+// Close popup on outside click
+document.getElementById('resume-popup')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeResumePopup();
+});
 
 // Blog Functionality
 function renderBlogs(items) {
@@ -303,7 +371,7 @@ async function filterBlogs(category) {
     });
 
     const activeBtn = document.getElementById(`btn-${category}`);
-    if(activeBtn) {
+    if (activeBtn) {
         activeBtn.className = 'blog-filter active px-4 py-2 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-full transition-colors';
     }
 
@@ -316,30 +384,61 @@ async function filterBlogs(category) {
 }
 
 // Initialization
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     initObservers();
     initHeroAnimation();
     loadBlogs();
+
+    // Check URL params for journal page
+    if (isJournalPage) {
+        if (blogsLoadedPromise) await blogsLoadedPromise;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+        if (postId) {
+            // We need to wait for blogs to load, which loadBlogs does asynchronously
+            // But loadBlogs sets blogsLoadedPromise
+            const blog = blogs.find(b => b.id === parseInt(postId));
+            if (blog) {
+                openBlog(parseInt(postId));
+            }
+        } else {
+            // Ensure list view is visible
+            const blogView = document.getElementById('blog-view');
+            const blogReadView = document.getElementById('blog-read-view');
+            if (blogView) blogView.classList.remove('hidden');
+            if (blogReadView) blogReadView.classList.add('hidden');
+            filterBlogs('all');
+        }
+    }
 });
 
 // --- HERO FOURIER ANIMATION ---
-let animationId; 
+let animationId;
 
 function initHeroAnimation() {
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
-    
+
     if (animationId) cancelAnimationFrame(animationId);
 
     const ctx = canvas.getContext('2d');
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    const centerY = canvas.height / 2;
-    const baseAmplitude = canvas.height / 8; 
+    // Set canvas size with dpr for crisp rendering (Improvement over original)
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const width = rect.width;
+    const height = rect.height;
+    const centerY = height / 2;
+    const baseAmplitude = height / 8;
+
     let time = 0;
-    let cycle = 0; 
+    let cycle = 0;
 
     function getThemeColorStr() {
         const isDark = document.documentElement.classList.contains('dark');
@@ -348,32 +447,38 @@ function initHeroAnimation() {
 
     const harmonics = [
         { freq: 1, amp: 1 },
-        { freq: 3, amp: 1/3 },
-        { freq: 5, amp: 1/5 },
-        { freq: 7, amp: 1/7 },
-        { freq: 9, amp: 1/9 }
+        { freq: 3, amp: 1 / 3 },
+        { freq: 5, amp: 1 / 5 },
+        { freq: 7, amp: 1 / 7 },
+        { freq: 9, amp: 1 / 9 }
     ];
 
     function animate() {
         const themeColor = getThemeColorStr();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        time += 0.015;
+        ctx.clearRect(0, 0, width, height);
+
+        time += 0.01; // Slightly slower for elegance
         cycle += 0.005;
 
+        // The "Breathing" effect: Waves separate and combine
         const separation = (Math.sin(cycle) + 1) / 2;
-        
+
+        // 1. Draw Individual Harmonics
         harmonics.forEach((h, index) => {
             ctx.beginPath();
-            ctx.lineWidth = 1;
-            const spreadY = (index - 2) * 60 * separation; 
-            
+            // Thicker lines than original
+            ctx.lineWidth = 1.5;
+
+            // Spread waves out vertically based on separation
+            const spreadY = (index - 2) * 80 * separation;
+
             const currentAmplitude = baseAmplitude * h.amp;
-            const opacity = 0.1 + (0.3 * separation);
+            // Higher opacity than original
+            const opacity = 0.15 + (0.4 * separation);
 
             ctx.strokeStyle = `rgba(${themeColor}, ${opacity})`;
 
-            for (let x = 0; x < canvas.width; x++) {
+            for (let x = 0; x < width; x++) {
                 const y = centerY + spreadY + Math.sin(x * 0.01 * h.freq + time * h.freq) * currentAmplitude;
                 if (x === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
@@ -381,11 +486,13 @@ function initHeroAnimation() {
             ctx.stroke();
         });
 
+        // 2. Draw Resultant Sum (The Combined Wave)
         ctx.beginPath();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = `rgba(${themeColor}, ${0.8 - (0.4 * separation)})`; 
+        ctx.lineWidth = 3; // Bold line for the sum
+        // Opacity inverse to separation (most visible when combined)
+        ctx.strokeStyle = `rgba(${themeColor}, ${0.9 - (0.3 * separation)})`;
 
-        for (let x = 0; x < canvas.width; x++) {
+        for (let x = 0; x < width; x++) {
             let ySum = 0;
             harmonics.forEach(h => {
                 ySum += Math.sin(x * 0.01 * h.freq + time * h.freq) * (baseAmplitude * h.amp);

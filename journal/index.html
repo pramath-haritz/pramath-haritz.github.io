@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Journal | Pramath Haritz</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+    <!-- SEO Metadata -->
+    <meta name="description"
+        content="The Journal - Thoughts on technology, design, and the philosophy of building things by Pramath Haritz.">
+    <meta name="keywords" content="Blog, Journal, Technology, Design, Philosophy, Pramath Haritz">
+    <meta name="author" content="Pramath Haritz">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pramath-haritz.github.io/journal/">
+    <meta property="og:title" content="The Journal | Pramath Haritz">
+    <meta property="og:description" content="Thoughts on technology, design, and the philosophy of building things.">
+    <meta property="og:image" content="https://pramath-haritz.github.io/assets/display_picture3.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pramath-haritz.github.io/journal/">
+    <meta property="twitter:title" content="The Journal | Pramath Haritz">
+    <meta property="twitter:description"
+        content="Thoughts on technology, design, and the philosophy of building things.">
+    <meta property="twitter:image" content="https://pramath-haritz.github.io/assets/display_picture3.png">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body
+    class="antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black bg-swiss-white text-swiss-black dark:bg-swiss-black dark:text-swiss-white transition-colors duration-300 w-full">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-swiss-white/90 dark:bg-swiss-black/90 backdrop-blur-sm border-b border-black/5 dark:border-white/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+            <!-- Logo -->
+            <a href="../index.html"
+                class="font-display font-bold text-xl tracking-tighter z-50 text-swiss-black dark:text-swiss-white relative">
+                PH.
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8 font-sans text-sm tracking-wide">
+                <a href="../index.html" class="nav-link uppercase">Home</a>
+                <a href="../index.html#about" class="nav-link uppercase">About</a>
+                <a href="../index.html#projects" class="nav-link uppercase">Work</a>
+                <a href="../index.html#contact" class="nav-link uppercase">Contact</a>
+                <a href="#" onclick="switchView('blog'); return false;" class="nav-link uppercase font-bold">Journal</a>
+
+                <!-- Desktop Toggle -->
+                <button onclick="toggleTheme()"
+                    class="ml-4 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                    aria-label="Toggle Dark Mode">
+                    <svg class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <div class="md:hidden z-50">
+                <button id="menu-btn" class="flex flex-col gap-1.5 p-2 group focus:outline-none" aria-label="Menu">
+                    <span
+                        class="w-6 h-0.5 bg-black dark:bg-white transition-all duration-300 origin-center group-hover:w-8"></span>
+                    <span
+                        class="w-6 h-0.5 bg-black dark:bg-white transition-all duration-300 origin-center group-hover:w-8"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 h-screen w-screen bg-swiss-white dark:bg-swiss-black opacity-0 pointer-events-none transition-all duration-500 flex flex-col justify-between items-center py-24 px-6 md:hidden z-40">
+        <!-- Navigation Links -->
+        <div class="flex flex-col items-center justify-center space-y-6 flex-1">
+            <a href="../index.html"
+                class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">HOME</a>
+            <a href="../index.html#about"
+                class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">ABOUT</a>
+            <a href="../index.html#projects"
+                class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">WORK</a>
+            <a href="#" onclick="mobileNav('blog'); return false;"
+                class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">JOURNAL</a>
+            <a href="../index.html#contact"
+                class="mobile-item font-display text-5xl sm:text-6xl font-medium text-black dark:text-white hover:text-swiss-gray transition-colors">CONTACT</a>
+        </div>
+
+        <!-- Mobile Footer Controls -->
+        <div class="flex flex-col items-center gap-8 mobile-item">
+            <button onclick="toggleTheme()"
+                class="flex items-center gap-3 px-6 py-2 rounded-full border border-black/10 dark:border-white/10 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+                <span class="text-xs font-mono uppercase tracking-widest">Switch Theme</span>
+                <svg class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+
+            <div class="flex gap-6 text-swiss-gray">
+                <a href="https://twitter.com/pramath_haritz"
+                    class="text-sm font-mono uppercase hover:text-black dark:hover:text-white">Twitter</a>
+                <a href="https://www.linkedin.com/in/pramath-haritz-aa69381b7/"
+                    class="text-sm font-mono uppercase hover:text-black dark:hover:text-white">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: BLOG LIST -->
+    <main id="blog-view" class="pt-24 px-6 min-h-screen bg-white dark:bg-swiss-black transition-colors duration-300">
+        <div class="max-w-4xl mx-auto">
+            <!-- Blog Header -->
+            <div class="mb-16 border-b border-black/10 dark:border-white/10 pb-8">
+                <!-- Breadcrumb -->
+                <div class="flex items-center gap-2 mb-6 font-mono text-xs uppercase tracking-widest text-swiss-gray">
+                    <a href="../index.html" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
+                    <span>/</span>
+                    <span class="text-black dark:text-white">Journal</span>
+                </div>
+                <h1 class="font-display text-6xl md:text-7xl uppercase tracking-tighter mb-4">The Journal</h1>
+                <p class="font-sans text-swiss-gray">Thoughts on anything and everything.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex space-x-2 mb-12 font-mono text-sm overflow-x-auto pb-2">
+                <button onclick="filterBlogs('all')" id="btn-all"
+                    class="blog-filter active px-4 py-2 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-full transition-colors">All</button>
+                <button onclick="filterBlogs('tech')" id="btn-tech"
+                    class="blog-filter px-4 py-2 border border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black rounded-full transition-colors">Technical</button>
+                <button onclick="filterBlogs('notes')" id="btn-notes"
+                    class="blog-filter px-4 py-2 border border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black rounded-full transition-colors">Notes</button>
+            </div>
+
+            <!-- Blog List Container -->
+            <div id="blog-container" class="space-y-12 pb-24">
+                <!-- JavaScript will inject posts here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- VIEW: BLOG READ -->
+    <main id="blog-read-view"
+        class="hidden pt-24 px-6 min-h-screen bg-white dark:bg-swiss-black transition-colors duration-300">
+        <div class="max-w-3xl mx-auto pb-24">
+            <!-- Breadcrumb -->
+            <div class="mb-12 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-swiss-gray">
+                <a href="../index.html" class="hover:text-black dark:hover:text-white transition-colors">Home</a>
+                <span>/</span>
+                <a href="#" onclick="switchView('blog'); return false;"
+                    class="hover:text-black dark:hover:text-white transition-colors">Journal</a>
+                <span>/</span>
+                <span class="text-black dark:text-white">Reading</span>
+            </div>
+
+            <div id="blog-content-area" class="reveal-text active">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="py-6 px-6 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs uppercase font-mono text-swiss-gray">
+        <div>© 2025 Pramath Haritz</div>
+        <div>Designed in random cafes</div>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
